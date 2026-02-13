@@ -5,8 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Análise de Dados - Monitoramento Digital</title>
     
+    <!-- 
+      NOTE: For production, install Tailwind CSS via npm/postcss instead of using CDN.
+      See: https://tailwindcss.com/docs/installation
+    -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Using specific version instead of plotly-latest to avoid outdated version issues -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -85,6 +90,7 @@
 
                     gerarGraficoProgramasPorEscola(dados);
                     gerarGraficoStatusGeral(dados);
+                    gerarGraficoAlunosAtendidosSimulado();
                     gerarTabelaDados(dados);
 
                 } catch (error) {
@@ -210,6 +216,46 @@
                     </div>`;
                 chartsContainer.appendChild(chartDiv);
                 Plotly.newPlot('chart3', data, layout, {responsive: true});
+            }
+
+            function gerarTabelaDados(dados) {
+                // Criar tabela com os dados
+                const tableDiv = document.createElement('div');
+                tableDiv.className = 'bg-white p-6 rounded-lg shadow-lg mt-8 overflow-x-auto';
+                
+                const tableHtml = `
+                    <div class="mt-4 border-t pt-4">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4">Tabela 1: Dados Completos dos Programas</h3>
+                        <p class="text-gray-600 mb-4">Lista completa de todos os programas e seus status em cada escola.</p>
+                    </div>
+                    <table class="min-w-full bg-white border border-gray-200">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Escola</th>
+                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Programa</th>
+                                <th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${dados.map(item => `
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-2 px-4 text-sm text-gray-600 border-b">${item.escola_nome || '-'}</td>
+                                    <td class="py-2 px-4 text-sm text-gray-600 border-b">${item.programa_nome || '-'}</td>
+                                    <td class="py-2 px-4 text-sm border-b">
+                                        <span class="px-2 py-1 rounded text-xs font-medium ${
+                                            item.status === 'Ativo' ? 'bg-green-100 text-green-800' :
+                                            item.status === 'Suspenso' ? 'bg-red-100 text-red-800' :
+                                            'bg-yellow-100 text-yellow-800'
+                                        }">${item.status || 'Não Iniciado'}</span>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                
+                tableDiv.innerHTML = tableHtml;
+                chartsContainer.appendChild(tableDiv);
             }
 
             const dropdownContainer = document.getElementById('escolas-dropdown-container');
