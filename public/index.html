@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento Digital - Início</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Estilo base para a fonte e cores */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- CABEÇALHO -->
+    <header class="bg-[#031f46] text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-left">
+                <h1 class="text-xl md:text-2xl font-bold">Monitoramento Digital</h1>
+                <h2 class="text-xs md:text-sm font-light text-gray-300">Programas e projetos nas escolas do GDF-Plano Piloto</h2>
+            </div>
+            <div class="flex items-center flex-shrink-0">
+                <!-- Certifique-se de que o caminho para as imagens está correto -->
+                <img src="img/1200px-Instituto_Federal_de_Brasília_-_Marca_Vertical_2015.svg.png" alt="Logo IFB" class="h-16 md:h-20 ml-4">
+                <img src="img/banner.jpg" alt="Logo PIBIC" class="h-16 md:h-20 ml-2">
+            </div>
+        </div>
+    </header>
+    
+    <!-- NAVEGAÇÃO -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto">
+            <ul class="flex justify-center items-center list-none p-0 m-0 text-sm md:text-base">
+                <li><a href="index.html" class="text-gray-800 font-bold px-3 py-3 block border-b-2 border-blue-600">Início</a></li>
+                <li><a href="pg2.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Projetos e Programas</a></li>
+                <li class="relative" id="escolas-dropdown-container">
+                    <button id="escolas-btn" class="text-gray-600 hover:text-blue-600 px-3 py-3 block w-full text-left flex items-center transition-colors">
+                        <span>Escolas</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="escolas-menu" class="absolute bg-white shadow-xl mt-1 rounded-md hidden z-10 w-48">
+                        <a href="cruzeiro1.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEMI Cruzeiro</a>
+                        <a href="asanorte.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Asa Norte</a>
+                        <a href="elefantebranco.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Elefante Branco</a>
+                        <a href="freire.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Paulo Freire</a>
+                        <a href="leste.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM St Leste</a>
+                        <a href="oeste.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM St Oeste</a>
+                    </div>
+                </li>
+                <li><a href="Mapa.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Localização</a></li>
+                <li class="mx-2"><a href="dados.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Dados</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- BANNER -->
+    <div class="w-full h-48 md:h-64 lg:h-80 overflow-hidden">
+        <img src="img/ifb.jpeg" alt="Banner do IFB" class="w-full h-full object-cover">
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="container mx-auto p-4 md:p-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Conteúdo Principal -->
+            <div class="w-full lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-3xl font-bold text-gray-900 border-b pb-3 mb-4">Bem-vindo ao nosso site!</h2>
+                <p class="mb-4 text-gray-700">Somos Maria Fernanda e Thiago Araujo, alunos do Instituto Federal de Brasília, nos cursos de Gestão Pública e Sistemas Para Internet, dedicados a um projeto no âmbito do Programa Institucional de Bolsas de Iniciação Científica (PIBIC). Sob a orientação liderada pela Dra. Denise Gomes Moura, Docente do Instituto Federal de Brasília, nossa proposta gira em torno de um tema essencial: o Monitoramento Digital de Projetos e Programas da Educação Pública nas escolas de ensino médio da Secretaria de Educação do Governo do Distrito Federal, especificamente localizadas no Plano Piloto.</p>
+                
+                <img src="img/bolsistas.jpg" alt="Bolsistas: Maria Fernanda e Thiago Araújo" class="w-full rounded-lg shadow-lg my-6">
+
+                <h3 class="text-2xl font-bold text-gray-900 mt-8 mb-3">Nosso Propósito</h3>
+                <p class="mb-4 text-gray-700">O objetivo primordial deste projeto é criar uma plataforma que forneça informações sobre os programas e projetos educacionais da Secretaria de Educação do GDF e do Ministério da Educação (MEC) voltados para o ensino médio no Plano Piloto, DF. Acreditamos na transparência como um pilar fundamental da gestão pública e, por meio dessa iniciativa, envolvemos tanto autoridades educacionais quanto cidadãos na avaliação e no acompanhamento dos projetos e programas.</p>
+                
+                <h3 class="text-2xl font-bold text-gray-900 mt-8 mb-3">Nossa Motivação</h3>
+                <p class="text-gray-700">A concepção desta plataforma nasceu de nossa convicção de que a educação é o alicerce do desenvolvimento nacional. Acreditamos na necessidade de fiscalização e exigência para garantir uma educação de excelência no país. Os estudantes são o futuro e merecem uma educação de qualidade. Nossa plataforma visa aprimorar essa realidade, oferecendo uma ferramenta para a comunidade escolar e os gestores públicos atuarem em conjunto na construção de um sistema educacional mais eficiente e igualitário.</p>
+            </div>
+            
+            <!-- Barra Lateral (Sidebar) -->
+            <aside class="w-full lg:w-1/3 bg-[#031f46] text-white p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-bold border-b border-blue-800 pb-3 mb-4">Nossos Objetivos</h3>
+                <p class="mb-4 text-blue-200">A transparência nos dados proporciona:</p>
+                <ul class="space-y-3 list-disc list-inside text-blue-100">
+                    <li>Identificação e divulgação dos programas e projetos educacionais do MEC voltados para o ensino médio do GDF no Plano Piloto - DF.</li>
+                    <li>Coleta e análise de dados relevantes sobre os projetos e programas educacionais em andamento.</li>
+                    <li>Identificação de possíveis melhorias nas políticas públicas e nos projetos educacionais existentes.</li>
+                    <li>Participação democrática das autoridades competentes e da comunidade escolar na avaliação e no acompanhamento dos projetos e programas.</li>
+                </ul>
+            </aside>
+        </div>
+    </div>
+
+    <!-- RODAPÉ -->
+    <footer class="bg-gray-800 text-white text-center p-4 mt-8">
+        <p>&copy; 2024 Desenvolvido por Maria Fernanda Santos & Thiago Araújo.</p>
+    </footer>
+
+    <script>
+        // Lógica para o menu dropdown
+        const dropdownContainer = document.getElementById('escolas-dropdown-container');
+        const dropdownBtn = document.getElementById('escolas-btn');
+        const dropdownMenu = document.getElementById('escolas-menu');
+
+        dropdownBtn.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Fecha o dropdown se clicar fora dele
+        document.addEventListener('click', (event) => {
+            if (!dropdownContainer.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "monitoramento-digital",
+  "version": "1.0.0",
+  "description": "Um portal para o monitoramento de programas e projetos educacionais nas escolas do GDF-Plano Piloto, desenvolvido como parte de um projeto PIBIC.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pibic",
+    "educação",
+    "monitoramento",
+    "projetos",
+    "GDF"
+  ],
+  "author": "Maria Fernanda Santos, Thiago Araújo",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "node-fetch": "^2.6.7",
+    "sqlite3": "^5.0.2"
+  }
+}
