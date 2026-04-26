@@ -1,201 +1,474 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Localização das Escolas - Monitoramento Digital</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa Executivo - Monitoramento Digital</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #e5e7eb;
+      --brand: #0f5e9c;
+      --brand-strong: #073b63;
+      --success: #0f9f6e;
+      --warning: #c47a09;
+      --danger: #c24141;
+    }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f7f8fb;
+      color: var(--ink);
+      letter-spacing: 0;
+    }
 
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7f6;
-        }
-        #map {
-            height: 70vh;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 0;
-        }
-        .leaflet-popup-content-wrapper {
-            background-color: #031f46;
-            color: #ffffff;
-            border-radius: 8px;
-        }
-        .leaflet-popup-content {
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .leaflet-popup-tip {
-            background-color: #031f46;
-        }
-    </style>
+    .shell { max-width: 1240px; margin: 0 auto; }
+    .glass-nav {
+      background: rgba(255,255,255,.88);
+      border-bottom: 1px solid rgba(229,231,235,.92);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-link {
+      color: #475569;
+      border-radius: 999px;
+      padding: .55rem .85rem;
+      font-weight: 700;
+      font-size: .88rem;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--brand-strong);
+      background: #e8f2fb;
+    }
+
+    .schools-menu { position: relative; flex-shrink: 0; }
+    .schools-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + .45rem);
+      width: 230px;
+      padding: .45rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 24px 60px rgba(15,23,42,.16);
+      z-index: 50;
+    }
+    .schools-menu:hover .schools-dropdown,
+    .schools-menu:focus-within .schools-dropdown { display: block; }
+    .school-link {
+      display: block;
+      border-radius: 6px;
+      padding: .68rem .75rem;
+      color: #334155;
+      font-size: .85rem;
+      font-weight: 800;
+    }
+    .school-link:hover { background: #e8f2fb; color: var(--brand-strong); }
+
+    .institutional-logos {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      padding: .35rem .55rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      flex-shrink: 0;
+    }
+    .institutional-logos img {
+      height: 34px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .panel, .stat-card, .school-row {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, .07);
+    }
+
+    #map {
+      min-height: 640px;
+      height: calc(100vh - 250px);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 0;
+      background: #dbeafe;
+    }
+
+    .marker-pin {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 3px solid #fff;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      box-shadow: 0 14px 28px rgba(15, 23, 42, .25);
+    }
+
+    .marker-ok { background: var(--success); }
+    .marker-alert { background: var(--warning); }
+    .marker-idle { background: #64748b; }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 8px;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, .28);
+    }
+
+    .leaflet-popup-content {
+      width: 300px !important;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .65rem .85rem;
+      font-weight: 800;
+      font-size: .85rem;
+      color: #475569;
+      background: #fff;
+    }
+
+    .filter-btn.active {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
+    }
+
+    @media (max-width: 900px) {
+      #map { height: 520px; min-height: 520px; }
+      .nav-scroll { overflow-x: auto; scrollbar-width: none; }
+      .nav-scroll::-webkit-scrollbar { display: none; }
+      .institutional-logos { display: none; }
+    }
+  </style>
 </head>
-<body class="text-gray-800 flex flex-col min-h-screen">
+<body>
+  <header class="glass-nav sticky top-0 z-30">
+    <div class="shell px-4 py-3 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-3 min-w-0">
+        <span class="grid h-10 w-10 place-items-center rounded-lg bg-[#0f5e9c] text-white font-black">MD</span>
+        <span class="min-w-0">
+          <strong class="block text-sm md:text-base leading-tight">Monitoramento Digital</strong>
+          <span class="block text-xs text-slate-500 truncate">Mapa executivo das escolas</span>
+        </span>
+      </a>
+      <div class="institutional-logos" aria-label="Logos institucionais">
+        <img src="img/1200px-Instituto_Federal_de_Brasília_-_Marca_Vertical_2015.svg.png" alt="Instituto Federal de Brasília">
+        <img src="img/banner.jpg" alt="PIBIC">
+      </div>
+      <nav class="nav-scroll flex items-center gap-1">
+        <a class="nav-link" href="index.html">Início</a>
+        <a class="nav-link" href="pg2.html">Programas</a>
+        <div class="schools-menu">
+          <button class="nav-link" type="button">Escolas</button>
+          <div class="schools-dropdown">
+            <a class="school-link" href="cruzeiro1.html">CEMI Cruzeiro</a>
+            <a class="school-link" href="asanorte.html">CEM Asa Norte</a>
+            <a class="school-link" href="elefantebranco.html">CEM Elefante Branco</a>
+            <a class="school-link" href="freire.html">CEM Paulo Freire</a>
+            <a class="school-link" href="leste.html">CEM St Leste</a>
+            <a class="school-link" href="oeste.html">CEM St Oeste</a>
+          </div>
+        </div>
+        <a class="nav-link active" href="Mapa.html">Mapa</a>
+        <a class="nav-link" href="dados.html">Dados</a>
+      </nav>
+    </div>
+  </header>
 
-    <header class="bg-[#031f46] text-white p-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="text-left">
-                <h1 class="text-xl md:text-2xl font-bold">Monitoramento Digital</h1>
-                <h2 class="text-xs md:text-sm font-light text-gray-300">Programas e projetos nas escolas do GDF-Plano Piloto</h2>
+  <main class="shell px-4 py-8">
+    <section class="grid lg:grid-cols-[1fr_auto] gap-6 items-end">
+      <div>
+        <p class="text-sm font-black uppercase tracking-normal text-[#0f5e9c]">Geointeligência educacional</p>
+        <h1 class="mt-2 text-3xl md:text-5xl font-black leading-tight">Mapa executivo das escolas monitoradas</h1>
+        <p class="mt-4 max-w-3xl text-slate-600 leading-7">Os pontos, status e fontes são carregados a partir da API externa da base do projeto. Cada escola mostra programas ativos, suspensos, não iniciados e links de referência extraídos das páginas oficiais cadastradas.</p>
+      </div>
+      <a href="dados.html" class="inline-flex w-fit items-center rounded-full bg-[#0f5e9c] px-5 py-3 text-sm font-black text-white hover:bg-[#073b63]">Abrir análise de dados</a>
+    </section>
+
+    <section class="mt-7 grid grid-cols-2 lg:grid-cols-5 gap-3">
+      <article class="stat-card p-4">
+        <p class="text-xs font-black uppercase text-slate-500">Escolas</p>
+        <strong id="stat-schools" class="mt-2 block text-3xl font-black">--</strong>
+      </article>
+      <article class="stat-card p-4">
+        <p class="text-xs font-black uppercase text-slate-500">Programas</p>
+        <strong id="stat-programs" class="mt-2 block text-3xl font-black">--</strong>
+      </article>
+      <article class="stat-card p-4">
+        <p class="text-xs font-black uppercase text-slate-500">Ativos</p>
+        <strong id="stat-active" class="mt-2 block text-3xl font-black text-[#0f9f6e]">--</strong>
+      </article>
+      <article class="stat-card p-4">
+        <p class="text-xs font-black uppercase text-slate-500">Suspensos</p>
+        <strong id="stat-suspended" class="mt-2 block text-3xl font-black text-[#c47a09]">--</strong>
+      </article>
+      <article class="stat-card p-4 col-span-2 lg:col-span-1">
+        <p class="text-xs font-black uppercase text-slate-500">Fonte</p>
+        <strong class="mt-2 block text-sm font-black text-slate-800">ZeroSheets API</strong>
+      </article>
+    </section>
+
+    <section class="mt-7 grid lg:grid-cols-[360px_1fr] gap-5 items-start">
+      <aside class="panel p-4 md:p-5">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl font-black">Controle do mapa</h2>
+            <p id="updated-at" class="mt-1 text-sm text-slate-500">Carregando atualização...</p>
+          </div>
+        </div>
+
+        <label class="mt-5 block">
+          <span class="text-sm font-black text-slate-700">Buscar escola</span>
+          <input id="search" type="search" placeholder="Digite parte do nome" class="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#0f5e9c]">
+        </label>
+
+        <div class="mt-5">
+          <p class="text-sm font-black text-slate-700">Filtrar por situação</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            <button class="filter-btn active" data-filter="todos">Todos</button>
+            <button class="filter-btn" data-filter="Em execução">Em execução</button>
+            <button class="filter-btn" data-filter="Atenção">Atenção</button>
+            <button class="filter-btn" data-filter="Não iniciado">Não iniciado</button>
+          </div>
+        </div>
+
+        <div class="mt-6 border-t border-slate-200 pt-5">
+          <h3 class="text-sm font-black uppercase text-slate-500">Escolas encontradas</h3>
+          <div id="school-list" class="mt-3 space-y-3">
+            <p class="text-sm text-slate-500">Carregando escolas...</p>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel p-3">
+        <div id="map"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="bg-[#101827] text-white mt-10">
+    <div class="shell px-4 py-8 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+      <p class="text-sm text-white/72">&copy; 2026 Monitoramento Digital. Dados externos consumidos pela API do projeto.</p>
+      <a class="text-sm font-bold text-white/80 hover:text-white" href="index.html">Voltar para o início</a>
+    </div>
+  </footer>
+
+  <script>
+    const state = {
+      map: null,
+      markers: [],
+      escolas: [],
+      filtro: 'todos',
+      busca: ''
+    };
+
+    const markerClass = {
+      'Em execução': 'marker-ok',
+      'Atenção': 'marker-alert',
+      'Não iniciado': 'marker-idle'
+    };
+
+    const badgeClass = {
+      'Em execução': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      'Atenção': 'bg-amber-50 text-amber-700 border-amber-200',
+      'Não iniciado': 'bg-slate-50 text-slate-700 border-slate-200'
+    };
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[char]));
+    }
+
+    function iniciarMapa() {
+      state.map = L.map('map', {
+        zoomControl: true,
+        scrollWheelZoom: true
+      }).setView([-15.79, -47.89], 12);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO'
+      }).addTo(state.map);
+    }
+
+    function criarIcone(escola) {
+      const classe = markerClass[escola.status_geral] || 'marker-idle';
+      return L.divIcon({
+        className: '',
+        html: `<div class="marker-pin ${classe}">${escapeHtml(escola.sigla_mapa || escola.nome_curto || escola.id)}</div>`,
+        iconSize: [34, 34],
+        iconAnchor: [17, 17],
+        popupAnchor: [0, -18]
+      });
+    }
+
+    function popupHtml(escola) {
+      const programas = escola.programas.slice(0, 6).map(programa => `
+        <li class="flex items-start justify-between gap-3 border-t border-slate-100 py-2">
+          <span class="text-sm font-semibold text-slate-700">${escapeHtml(programa.nome)}</span>
+          <span class="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-black text-slate-600">${escapeHtml(programa.status)}</span>
+        </li>
+      `).join('');
+
+      const fontes = escola.fontes.slice(0, 3).map(fonte => `
+        <a class="block truncate text-xs font-bold text-[#0f5e9c] hover:underline" href="${escapeHtml(fonte.url)}" target="_blank" rel="noopener">${escapeHtml(fonte.titulo)}</a>
+      `).join('');
+
+      return `
+        <div class="p-4">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-black uppercase text-slate-500">${escapeHtml(escola.sigla_mapa || escola.nome_curto)}</p>
+              <h3 class="mt-1 text-lg font-black text-slate-950">${escapeHtml(escola.nome)}</h3>
             </div>
-            <div class="flex items-center flex-shrink-0">
-                <img src="img/1200px-Instituto_Federal_de_Brasília_-_Marca_Vertical_2015.svg.png" alt="Logo IFB" class="h-16 md:h-20 ml-4">
-                <img src="img/banner.jpg" alt="Logo PIBIC" class="h-16 md:h-20 ml-2">
+            <span class="rounded-full border px-2 py-1 text-[11px] font-black ${badgeClass[escola.status_geral] || badgeClass['Não iniciado']}">${escapeHtml(escola.status_geral)}</span>
+          </div>
+          <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+            <div class="rounded-lg bg-slate-50 p-2"><strong class="block">${escola.total_programas}</strong><span class="text-[11px] text-slate-500">Total</span></div>
+            <div class="rounded-lg bg-emerald-50 p-2"><strong class="block text-emerald-700">${escola.ativos}</strong><span class="text-[11px] text-slate-500">Ativos</span></div>
+            <div class="rounded-lg bg-amber-50 p-2"><strong class="block text-amber-700">${escola.suspensos}</strong><span class="text-[11px] text-slate-500">Atenção</span></div>
+          </div>
+          <ul class="mt-3">${programas}</ul>
+          ${fontes ? `<div class="mt-3 border-t border-slate-100 pt-3"><p class="mb-1 text-xs font-black uppercase text-slate-500">Fontes</p>${fontes}</div>` : ''}
+        </div>
+      `;
+    }
+
+    function escolasFiltradas() {
+      const busca = state.busca.toLowerCase();
+      return state.escolas.filter(escola => {
+        const bateFiltro = state.filtro === 'todos' || escola.status_geral === state.filtro;
+        const bateBusca = !busca || escola.nome.toLowerCase().includes(busca) || String(escola.nome_curto || '').toLowerCase().includes(busca);
+        return bateFiltro && bateBusca;
+      });
+    }
+
+    function renderizarMapa() {
+      state.markers.forEach(marker => marker.remove());
+      state.markers = [];
+
+      const escolas = escolasFiltradas();
+      const bounds = [];
+
+      escolas.forEach(escola => {
+        const marker = L.marker([escola.latitude, escola.longitude], { icon: criarIcone(escola) })
+          .addTo(state.map)
+          .bindPopup(popupHtml(escola));
+
+        state.markers.push(marker);
+        bounds.push([escola.latitude, escola.longitude]);
+      });
+
+      if (bounds.length > 0) {
+        state.map.fitBounds(bounds, { padding: [35, 35], maxZoom: 13 });
+      }
+
+      renderizarLista(escolas);
+    }
+
+    function renderizarLista(escolas) {
+      const list = document.getElementById('school-list');
+
+      if (escolas.length === 0) {
+        list.innerHTML = '<p class="text-sm text-slate-500">Nenhuma escola corresponde aos filtros.</p>';
+        return;
+      }
+
+      list.innerHTML = escolas.map(escola => `
+        <button class="school-row w-full p-4 text-left hover:border-[#0f5e9c]" data-school="${escola.id}">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-xs font-black uppercase text-slate-500">${escapeHtml(escola.sigla_mapa || escola.nome_curto)}</p>
+              <h3 class="mt-1 text-sm font-black text-slate-900">${escapeHtml(escola.nome)}</h3>
             </div>
-        </div>
-    </header>
-    
-    <nav class="bg-white shadow-md">
-        <div class="container mx-auto">
-            <ul class="flex justify-center items-center list-none p-0 m-0 text-sm md:text-base">
-                <li><a href="index.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Início</a></li>
-                <li><a href="pg2.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Projetos e Programas</a></li>
-                <li class="relative" id="escolas-dropdown-container">
-                    <button id="escolas-btn" class="text-gray-600 hover:text-blue-600 px-3 py-3 block w-full text-left flex items-center transition-colors">
-                        <span>Escolas</span>
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div id="escolas-menu" class="absolute bg-white shadow-xl mt-1 rounded-md hidden z-10 w-48">
-                        <a href="cruzeiro1.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEMI Cruzeiro</a>
-                        <a href="asanorte.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Asa Norte</a>
-                        <a href="elefantebranco.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Elefante Branco</a>
-                        <a href="freire.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Paulo Freire</a>
-                        <a href="leste.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM St Leste</a>
-                        <a href="oeste.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM St Oeste</a>
-                    </div>
-                </li>
-                <li><a href="Mapa.html" class="text-gray-800 font-bold px-3 py-3 block border-b-2 border-blue-600">Localização</a></li>
-                <li><a href="dados.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Dados</a></li>
-            </ul>
-        </div>
-    </nav>
+            <span class="rounded-full border px-2 py-1 text-[11px] font-black ${badgeClass[escola.status_geral] || badgeClass['Não iniciado']}">${escapeHtml(escola.status_geral)}</span>
+          </div>
+          <div class="mt-3 flex gap-2 text-xs font-bold text-slate-500">
+            <span>${escola.total_programas} programas</span>
+            <span>${escola.ativos} ativos</span>
+            <span>${escola.suspensos} suspensos</span>
+          </div>
+        </button>
+      `).join('');
 
-    <main class="container mx-auto p-4 md:p-8 flex-grow">
-        <h2 class="text-3xl font-bold text-center text-[#031f46] mb-4">Localização das Escolas Monitoradas</h2>
-        <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Clique no botão abaixo para carregar o mapa interativo e visualizar a localização das escolas do projeto.</p>
-        
-        <div class="text-center mb-8">
-            <button id="toggleMapBtn" class="bg-[#031f46] text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-800 transition-colors">
-                Mostrar Mapa
-            </button>
-        </div>
-
-        <div id="map" class="hidden"></div>
-    </main>
-
-    <footer class="bg-gray-800 text-white text-center p-4">
-        <p>&copy; 2024 Desenvolvido por Maria Fernanda Santos & Thiago Araújo.</p>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const toggleMapBtn = document.getElementById('toggleMapBtn');
-            const mapContainer = document.getElementById('map');
-            let map = null;
-            let mapaCarregado = false;
-
-            async function carregarMapa() {
-                if (mapaCarregado) return;
-
-                toggleMapBtn.textContent = 'Carregando...';
-                toggleMapBtn.disabled = true;
-
-                try {
-                    const response = await fetch('/api/dados-completos');
-                    const dadosCompletos = await response.json();
-
-                    // Coordenadas aproximadas das escolas em Brasília (GDF-Plano Piloto)
-                    const coordenadasEscolas = {
-                        'CEMI Cruzeiro': [-15.783, -47.900],
-                        'CEM Asa Norte': [-15.750, -47.880],
-                        'CEM Elefante Branco': [-15.800, -47.860],
-                        'CEM Paulo Freire': [-15.770, -47.890],
-                        'CEM St Leste': [-15.790, -47.870],
-                        'CEM St Oeste': [-15.780, -47.880]
-                    };
-
-                    // Extrai escolas únicas
-                    const escolasMap = new Map();
-                    dadosCompletos.forEach(item => {
-                        if (!escolasMap.has(item.escola_id)) {
-                            const coords = coordenadasEscolas[item.escola_nome];
-                            if (coords) {
-                                escolasMap.set(item.escola_id, {
-                                    nome: item.escola_nome,
-                                    local: coords
-                                });
-                            }
-                        }
-                    });
-                    const escolas = Array.from(escolasMap.values());
-
-                    escolas.forEach(escola => {
-                        L.marker(escola.local).addTo(map).bindPopup(`<b>${escola.nome}</b>`);
-                    });
-
-                    mapaCarregado = true;
-                    toggleMapBtn.textContent = 'Ocultar Mapa';
-
-                } catch (error) {
-                    console.error("Erro ao carregar dados para o mapa:", error);
-                    toggleMapBtn.textContent = 'Erro ao carregar. Tente novamente.';
-                } finally {
-                    toggleMapBtn.disabled = false;
-                }
-            }
-
-            toggleMapBtn.addEventListener('click', () => {
-                const isHidden = mapContainer.classList.contains('hidden');
-                
-                if (isHidden) {
-                    mapContainer.classList.remove('hidden');
-                    toggleMapBtn.textContent = 'Ocultar Mapa';
-
-                    if (!map) {
-                        map = L.map('map').setView([-15.793889, -47.882778], 12.5);
-                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        }).addTo(map);
-                    }
-                    
-                    // Garante que o tamanho do mapa seja calculado corretamente
-                    setTimeout(() => {
-                        map.invalidateSize();
-                        carregarMapa(); // Carrega os marcadores dinamicamente
-                    }, 1);
-
-                } else {
-                    mapContainer.classList.add('hidden');
-                    toggleMapBtn.textContent = 'Mostrar Mapa';
-                }
-            });
-
-            // Lógica do menu dropdown
-            const dropdownContainer = document.getElementById('escolas-dropdown-container');
-            const dropdownBtn = document.getElementById('escolas-btn');
-            const dropdownMenu = document.getElementById('escolas-menu');
-
-            if (dropdownBtn) {
-                dropdownBtn.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                    dropdownMenu.classList.toggle('hidden');
-                });
-                document.addEventListener('click', (event) => {
-                    if (!dropdownContainer.contains(event.target)) {
-                        dropdownMenu.classList.add('hidden');
-                    }
-                });
-            }
+      list.querySelectorAll('[data-school]').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = Number(button.dataset.school);
+          const index = escolas.findIndex(escola => escola.id === id);
+          const marker = state.markers[index];
+          if (marker) {
+            state.map.setView(marker.getLatLng(), 14);
+            marker.openPopup();
+          }
         });
-    </script>
+      });
+    }
+
+    function configurarFiltros() {
+      document.getElementById('search').addEventListener('input', event => {
+        state.busca = event.target.value.trim();
+        renderizarMapa();
+      });
+
+      document.querySelectorAll('.filter-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(item => item.classList.remove('active'));
+          button.classList.add('active');
+          state.filtro = button.dataset.filter;
+          renderizarMapa();
+        });
+      });
+    }
+
+    async function carregarMapa() {
+      try {
+        iniciarMapa();
+        configurarFiltros();
+
+        const response = await fetch('/api/escolas-mapa');
+        if (!response.ok) throw new Error('Falha ao carregar API');
+        const data = await response.json();
+
+        state.escolas = data.escolas || [];
+        document.getElementById('stat-schools').textContent = data.resumo.total_escolas;
+        document.getElementById('stat-programs').textContent = data.resumo.total_programas;
+        document.getElementById('stat-active').textContent = data.resumo.ativos;
+        document.getElementById('stat-suspended').textContent = data.resumo.suspensos;
+        document.getElementById('updated-at').textContent = `Atualizado em ${new Date(data.atualizado_em).toLocaleString('pt-BR')}`;
+
+        renderizarMapa();
+      } catch (error) {
+        console.error(error);
+        document.getElementById('school-list').innerHTML = '<p class="text-sm text-red-700">Não foi possível carregar os dados externos do mapa.</p>';
+      }
+    }
+
+    carregarMapa();
+  </script>
 </body>
 </html>

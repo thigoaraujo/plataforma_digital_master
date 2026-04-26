@@ -1,127 +1,313 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitoramento Digital - Início</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoramento Digital - Dashboard Educacional</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #e5e7eb;
+      --brand: #0f5e9c;
+      --brand-strong: #073b63;
+      --success: #0f9f6e;
+      --warning: #c47a09;
+      --danger: #c24141;
+    }
 
-    <style>
-        /* Estilo base para a fonte e cores */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7f6;
-        }
-    </style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f7f8fb;
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    .glass-nav {
+      background: rgba(255,255,255,.86);
+      border-bottom: 1px solid rgba(229,231,235,.92);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero {
+      min-height: 74vh;
+      background:
+        linear-gradient(90deg, rgba(6,18,34,.86) 0%, rgba(6,18,34,.68) 42%, rgba(6,18,34,.18) 100%),
+        url('img/ifb.jpeg') center/cover no-repeat;
+    }
+
+    .shell { max-width: 1180px; margin: 0 auto; }
+    .metric-card, .panel, .school-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, .07);
+    }
+
+    .nav-link {
+      color: #475569;
+      border-radius: 999px;
+      padding: .55rem .85rem;
+      font-weight: 700;
+      font-size: .88rem;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--brand-strong);
+      background: #e8f2fb;
+    }
+
+    .schools-menu { position: relative; flex-shrink: 0; }
+    .schools-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + .45rem);
+      width: 230px;
+      padding: .45rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 24px 60px rgba(15,23,42,.16);
+      z-index: 50;
+    }
+    .schools-menu:hover .schools-dropdown,
+    .schools-menu:focus-within .schools-dropdown { display: block; }
+    .school-link {
+      display: block;
+      border-radius: 6px;
+      padding: .68rem .75rem;
+      color: #334155;
+      font-size: .85rem;
+      font-weight: 800;
+    }
+    .school-link:hover { background: #e8f2fb; color: var(--brand-strong); }
+
+    .institutional-logos {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      padding: .35rem .55rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      flex-shrink: 0;
+    }
+    .institutional-logos img {
+      height: 34px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+      border-radius: 999px;
+      padding: .9rem 1.1rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .btn-primary:hover { background: var(--brand-strong); transform: translateY(-1px); }
+    .btn-secondary {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 999px;
+      padding: .9rem 1.1rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    @media (max-width: 760px) {
+      .hero { min-height: 82vh; }
+      .nav-scroll { overflow-x: auto; scrollbar-width: none; }
+      .nav-scroll::-webkit-scrollbar { display: none; }
+      .institutional-logos { display: none; }
+    }
+  </style>
 </head>
-<body class="text-gray-800">
-
-    <!-- CABEÇALHO -->
-    <header class="bg-[#031f46] text-white p-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="text-left">
-                <h1 class="text-xl md:text-2xl font-bold">Monitoramento Digital</h1>
-                <h2 class="text-xs md:text-sm font-light text-gray-300">Programas e projetos nas escolas do GDF-Plano Piloto</h2>
-            </div>
-            <div class="flex items-center flex-shrink-0">
-                <!-- Certifique-se de que o caminho para as imagens está correto -->
-                <img src="img/1200px-Instituto_Federal_de_Brasília_-_Marca_Vertical_2015.svg.png" alt="Logo IFB" class="h-16 md:h-20 ml-4">
-                <img src="img/banner.jpg" alt="Logo PIBIC" class="h-16 md:h-20 ml-2">
-            </div>
+<body>
+  <header class="glass-nav sticky top-0 z-30">
+    <div class="shell px-4 py-3 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-3 min-w-0">
+        <span class="grid h-10 w-10 place-items-center rounded-lg bg-[#0f5e9c] text-white font-black">MD</span>
+        <span class="min-w-0">
+          <strong class="block text-sm md:text-base leading-tight">Monitoramento Digital</strong>
+          <span class="block text-xs text-slate-500 truncate">Programas educacionais do GDF</span>
+        </span>
+      </a>
+      <div class="institutional-logos" aria-label="Logos institucionais">
+        <img src="img/1200px-Instituto_Federal_de_Brasília_-_Marca_Vertical_2015.svg.png" alt="Instituto Federal de Brasília">
+        <img src="img/banner.jpg" alt="PIBIC">
+      </div>
+      <nav class="nav-scroll flex items-center gap-1">
+        <a class="nav-link active" href="index.html">Início</a>
+        <a class="nav-link" href="pg2.html">Programas</a>
+        <div class="schools-menu">
+          <button class="nav-link" type="button">Escolas</button>
+          <div class="schools-dropdown">
+            <a class="school-link" href="cruzeiro1.html">CEMI Cruzeiro</a>
+            <a class="school-link" href="asanorte.html">CEM Asa Norte</a>
+            <a class="school-link" href="elefantebranco.html">CEM Elefante Branco</a>
+            <a class="school-link" href="freire.html">CEM Paulo Freire</a>
+            <a class="school-link" href="leste.html">CEM St Leste</a>
+            <a class="school-link" href="oeste.html">CEM St Oeste</a>
+          </div>
         </div>
-    </header>
-    
-    <!-- NAVEGAÇÃO -->
-    <nav class="bg-white shadow-md">
-        <div class="container mx-auto">
-            <ul class="flex justify-center items-center list-none p-0 m-0 text-sm md:text-base">
-                <li><a href="index.html" class="text-gray-800 font-bold px-3 py-3 block border-b-2 border-blue-600">Início</a></li>
-                <li><a href="pg2.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Projetos e Programas</a></li>
-                <li class="relative" id="escolas-dropdown-container">
-                    <button id="escolas-btn" class="text-gray-600 hover:text-blue-600 px-3 py-3 block w-full text-left flex items-center transition-colors">
-                        <span>Escolas</span>
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div id="escolas-menu" class="absolute bg-white shadow-xl mt-1 rounded-md hidden z-10 w-48">
-                        <a href="cruzeiro1.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEMI Cruzeiro</a>
-                        <a href="asanorte.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Asa Norte</a>
-                        <a href="elefantebranco.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Elefante Branco</a>
-                        <a href="freire.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Paulo Freire</a>
-                        <a href="leste.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM St Leste</a>
-                        <a href="oeste.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM St Oeste</a>
-                    </div>
-                </li>
-                <li><a href="Mapa.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Localização</a></li>
-                <li class="mx-2"><a href="dados.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Dados</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- BANNER -->
-    <div class="w-full h-48 md:h-64 lg:h-80 overflow-hidden">
-        <img src="img/ifb.jpeg" alt="Banner do IFB" class="w-full h-full object-cover">
+        <a class="nav-link" href="Mapa.html">Mapa</a>
+        <a class="nav-link" href="dados.html">Dados</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div class="container mx-auto p-4 md:p-8">
-        <div class="flex flex-col lg:flex-row gap-8">
-            
-            <!-- Conteúdo Principal -->
-            <div class="w-full lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-3xl font-bold text-gray-900 border-b pb-3 mb-4">Bem-vindo ao nosso site!</h2>
-                <p class="mb-4 text-gray-700">Somos Maria Fernanda e Thiago Araujo, alunos do Instituto Federal de Brasília, nos cursos de Gestão Pública e Sistemas Para Internet, dedicados a um projeto no âmbito do Programa Institucional de Bolsas de Iniciação Científica (PIBIC). Sob a orientação liderada pela Dra. Denise Gomes Moura, Docente do Instituto Federal de Brasília, nossa proposta gira em torno de um tema essencial: o Monitoramento Digital de Projetos e Programas da Educação Pública nas escolas de ensino médio da Secretaria de Educação do Governo do Distrito Federal, especificamente localizadas no Plano Piloto.</p>
-                
-                <img src="img/bolsistas.jpg" alt="Bolsistas: Maria Fernanda e Thiago Araújo" class="w-full rounded-lg shadow-lg my-6">
-
-                <h3 class="text-2xl font-bold text-gray-900 mt-8 mb-3">Nosso Propósito</h3>
-                <p class="mb-4 text-gray-700">O objetivo primordial deste projeto é criar uma plataforma que forneça informações sobre os programas e projetos educacionais da Secretaria de Educação do GDF e do Ministério da Educação (MEC) voltados para o ensino médio no Plano Piloto, DF. Acreditamos na transparência como um pilar fundamental da gestão pública e, por meio dessa iniciativa, envolvemos tanto autoridades educacionais quanto cidadãos na avaliação e no acompanhamento dos projetos e programas.</p>
-                
-                <h3 class="text-2xl font-bold text-gray-900 mt-8 mb-3">Nossa Motivação</h3>
-                <p class="text-gray-700">A concepção desta plataforma nasceu de nossa convicção de que a educação é o alicerce do desenvolvimento nacional. Acreditamos na necessidade de fiscalização e exigência para garantir uma educação de excelência no país. Os estudantes são o futuro e merecem uma educação de qualidade. Nossa plataforma visa aprimorar essa realidade, oferecendo uma ferramenta para a comunidade escolar e os gestores públicos atuarem em conjunto na construção de um sistema educacional mais eficiente e igualitário.</p>
-            </div>
-            
-            <!-- Barra Lateral (Sidebar) -->
-            <aside class="w-full lg:w-1/3 bg-[#031f46] text-white p-6 rounded-lg shadow-md">
-                <h3 class="text-2xl font-bold border-b border-blue-800 pb-3 mb-4">Nossos Objetivos</h3>
-                <p class="mb-4 text-blue-200">A transparência nos dados proporciona:</p>
-                <ul class="space-y-3 list-disc list-inside text-blue-100">
-                    <li>Identificação e divulgação dos programas e projetos educacionais do MEC voltados para o ensino médio do GDF no Plano Piloto - DF.</li>
-                    <li>Coleta e análise de dados relevantes sobre os projetos e programas educacionais em andamento.</li>
-                    <li>Identificação de possíveis melhorias nas políticas públicas e nos projetos educacionais existentes.</li>
-                    <li>Participação democrática das autoridades competentes e da comunidade escolar na avaliação e no acompanhamento dos projetos e programas.</li>
-                </ul>
-            </aside>
+  <main>
+    <section class="hero text-white">
+      <div class="shell px-4 pt-20 pb-14 md:pt-28">
+        <div class="max-w-3xl">
+          <span class="inline-flex rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm font-bold text-white/90">Apresentação do projeto</span>
+          <h1 class="mt-6 text-4xl md:text-6xl font-black leading-tight">Monitoramento Digital</h1>
+          <p class="mt-5 max-w-2xl text-lg md:text-xl leading-8 text-white/84">Projeto PIBIC/IFB criado por Maria Fernanda Santos e Thiago Araújo para apresentar, organizar e monitorar programas educacionais nas escolas de ensino médio do Plano Piloto.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="Mapa.html" class="btn-primary">Ver mapa executivo</a>
+            <a href="dados.html" class="btn-secondary">Analisar indicadores</a>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <section class="shell px-4 -mt-14 relative z-10">
+      <div id="metrics" class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+        <article class="metric-card p-5">
+          <p class="text-sm font-bold text-slate-500">Escolas monitoradas</p>
+          <strong id="metric-schools" class="mt-2 block text-3xl font-black">--</strong>
+        </article>
+        <article class="metric-card p-5">
+          <p class="text-sm font-bold text-slate-500">Programas mapeados</p>
+          <strong id="metric-programs" class="mt-2 block text-3xl font-black">--</strong>
+        </article>
+        <article class="metric-card p-5">
+          <p class="text-sm font-bold text-slate-500">Em execução</p>
+          <strong id="metric-active" class="mt-2 block text-3xl font-black text-[#0f9f6e]">--</strong>
+        </article>
+        <article class="metric-card p-5">
+          <p class="text-sm font-bold text-slate-500">Pontos de atenção</p>
+          <strong id="metric-alerts" class="mt-2 block text-3xl font-black text-[#c47a09]">--</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell px-4 py-16">
+      <div class="grid lg:grid-cols-[1.05fr_.95fr] gap-6 items-start">
+        <div class="panel p-6 md:p-8">
+          <p class="text-sm font-black uppercase tracking-normal text-[#0f5e9c]">Apresentação</p>
+          <h2 class="mt-3 text-3xl md:text-4xl font-black leading-tight">Transparência para acompanhar políticas públicas educacionais.</h2>
+          <p class="mt-4 text-slate-600 leading-7">Somos Maria Fernanda e Thiago Araújo, alunos do Instituto Federal de Brasília, nos cursos de Gestão Pública e Sistemas para Internet. Esta plataforma apresenta informações sobre programas e projetos da Secretaria de Educação do GDF e do MEC voltados ao ensino médio no Plano Piloto.</p>
+          <p class="mt-4 text-slate-600 leading-7">A proposta é reduzir a opacidade informacional, apoiar o controle social e permitir que comunidade escolar, gestores e cidadãos acompanhem a implementação das ações com mais clareza.</p>
+          <div class="mt-7 grid sm:grid-cols-3 gap-3">
+            <div class="rounded-lg border border-slate-200 p-4">
+              <strong class="block text-sm">Propósito</strong>
+              <span class="mt-1 block text-sm text-slate-500">Centralizar informações e facilitar o acompanhamento público.</span>
+            </div>
+            <div class="rounded-lg border border-slate-200 p-4">
+              <strong class="block text-sm">Dados</strong>
+              <span class="mt-1 block text-sm text-slate-500">Organizar status, programas, escolas e fontes externas.</span>
+            </div>
+            <div class="rounded-lg border border-slate-200 p-4">
+              <strong class="block text-sm">Controle social</strong>
+              <span class="mt-1 block text-sm text-slate-500">Dados organizados para acompanhamento público.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel overflow-hidden">
+          <img src="img/bolsistas.jpg" alt="Equipe do projeto Monitoramento Digital" class="h-64 w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-black">Pesquisa aplicada à transparência</h3>
+            <p class="mt-3 text-slate-600 leading-7">Projeto desenvolvido no contexto do PIBIC/IFB para reduzir a opacidade informacional sobre políticas públicas educacionais no Distrito Federal.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-y border-slate-200 bg-white">
+      <div class="shell px-4 py-14">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+          <div>
+            <p class="text-sm font-black uppercase tracking-normal text-[#0f5e9c]">Escolas</p>
+            <h2 class="mt-2 text-3xl font-black">Unidades em acompanhamento</h2>
+          </div>
+          <a href="Mapa.html" class="inline-flex w-fit items-center rounded-full border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50">Abrir mapa completo</a>
+        </div>
+        <div id="schools" class="mt-7 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <p class="text-slate-500">Carregando escolas da API...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[#101827] text-white">
+    <div class="shell px-4 py-8 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+      <p class="text-sm text-white/72">&copy; 2026 Monitoramento Digital. Desenvolvido por Maria Fernanda Santos e Thiago Araújo.</p>
+      <p id="updated-at" class="text-sm text-white/60">Dados externos em atualização.</p>
     </div>
+  </footer>
 
-    <!-- RODAPÉ -->
-    <footer class="bg-gray-800 text-white text-center p-4 mt-8">
-        <p>&copy; 2024 Desenvolvido por Maria Fernanda Santos & Thiago Araújo.</p>
-    </footer>
+  <script>
+    const statusTone = {
+      'Em execução': 'text-emerald-700 bg-emerald-50 border-emerald-200',
+      'Atenção': 'text-amber-700 bg-amber-50 border-amber-200',
+      'Não iniciado': 'text-slate-700 bg-slate-50 border-slate-200'
+    };
 
-    <script>
-        // Lógica para o menu dropdown
-        const dropdownContainer = document.getElementById('escolas-dropdown-container');
-        const dropdownBtn = document.getElementById('escolas-btn');
-        const dropdownMenu = document.getElementById('escolas-menu');
+    async function carregarResumo() {
+      try {
+        const response = await fetch('/api/escolas-mapa');
+        if (!response.ok) throw new Error('Falha ao carregar API');
+        const data = await response.json();
+        const resumo = data.resumo || {};
 
-        dropdownBtn.addEventListener('click', () => {
-            dropdownMenu.classList.toggle('hidden');
-        });
+        document.getElementById('metric-schools').textContent = resumo.total_escolas ?? '--';
+        document.getElementById('metric-programs').textContent = resumo.total_programas ?? '--';
+        document.getElementById('metric-active').textContent = resumo.ativos ?? '--';
+        document.getElementById('metric-alerts').textContent = resumo.suspensos ?? '--';
+        document.getElementById('updated-at').textContent = `Dados atualizados em ${new Date(data.atualizado_em).toLocaleString('pt-BR')}`;
 
-        // Fecha o dropdown se clicar fora dele
-        document.addEventListener('click', (event) => {
-            if (!dropdownContainer.contains(event.target)) {
-                dropdownMenu.classList.add('hidden');
-            }
-        });
-    </script>
+        const schools = document.getElementById('schools');
+        schools.innerHTML = data.escolas.map(escola => `
+          <article class="school-card p-5">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="text-xs font-black uppercase tracking-normal text-slate-500">${escola.sigla_mapa || escola.nome_curto || 'Escola'}</p>
+                <h3 class="mt-1 text-lg font-black">${escola.nome}</h3>
+              </div>
+              <span class="shrink-0 rounded-full border px-3 py-1 text-xs font-black ${statusTone[escola.status_geral] || statusTone['Não iniciado']}">${escola.status_geral}</span>
+            </div>
+            <div class="mt-5 grid grid-cols-3 gap-2 text-center">
+              <div class="rounded-lg bg-slate-50 p-3"><strong class="block text-lg">${escola.total_programas}</strong><span class="text-xs text-slate-500">Total</span></div>
+              <div class="rounded-lg bg-emerald-50 p-3"><strong class="block text-lg text-emerald-700">${escola.ativos}</strong><span class="text-xs text-slate-500">Ativos</span></div>
+              <div class="rounded-lg bg-amber-50 p-3"><strong class="block text-lg text-amber-700">${escola.suspensos}</strong><span class="text-xs text-slate-500">Atenção</span></div>
+            </div>
+          </article>
+        `).join('');
+      } catch (error) {
+        document.getElementById('schools').innerHTML = '<p class="text-red-700">Não foi possível carregar os dados externos agora.</p>';
+      }
+    }
+
+    carregarResumo();
+  </script>
 </body>
 </html>

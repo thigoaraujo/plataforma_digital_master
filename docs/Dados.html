@@ -1,232 +1,243 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Dados - Monitoramento Digital</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7f6;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dados - Monitoramento Digital</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #f7f8fb; color: #111827; letter-spacing: 0; }
+    .shell { max-width: 1180px; margin: 0 auto; }
+    .glass-nav { background: rgba(255,255,255,.88); border-bottom: 1px solid #e5e7eb; backdrop-filter: blur(18px); }
+    .nav-link { color: #475569; border-radius: 999px; padding: .55rem .85rem; font-weight: 700; font-size: .88rem; white-space: nowrap; }
+    .nav-link:hover, .nav-link.active { color: #073b63; background: #e8f2fb; }
+    .schools-menu { position: relative; flex-shrink: 0; }
+    .schools-dropdown { display: none; position: absolute; right: 0; top: calc(100% + .45rem); width: 230px; padding: .45rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 24px 60px rgba(15,23,42,.16); z-index: 50; }
+    .schools-menu:hover .schools-dropdown, .schools-menu:focus-within .schools-dropdown { display: block; }
+    .school-link { display: block; border-radius: 6px; padding: .68rem .75rem; color: #334155; font-size: .85rem; font-weight: 800; }
+    .school-link:hover { background: #e8f2fb; color: #073b63; }
+    .institutional-logos { display: flex; align-items: center; gap: .65rem; padding: .35rem .55rem; border: 1px solid #e5e7eb; border-radius: 999px; background: rgba(255,255,255,.72); flex-shrink: 0; }
+    .institutional-logos img { height: 34px; width: auto; object-fit: contain; display: block; }
+    .panel, .stat-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 18px 45px rgba(15,23,42,.07); }
+    .status-pill { border-radius: 999px; padding: .25rem .6rem; font-size: .75rem; font-weight: 900; }
+    @media (max-width: 760px) {
+      .nav-scroll { overflow-x: auto; scrollbar-width: none; }
+      .nav-scroll::-webkit-scrollbar { display: none; }
+      .institutional-logos { display: none; }
+    }
+  </style>
 </head>
-<body class="text-gray-800 flex flex-col min-h-screen">
-
-    <header class="bg-[#031f46] text-white p-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="text-left">
-                <h1 class="text-xl md:text-2xl font-bold">Monitoramento Digital</h1>
-                <h2 class="text-xs md:text-sm font-light text-gray-300">Programas e projetos nas escolas do GDF-Plano Piloto</h2>
-            </div>
-            <div class="flex items-center flex-shrink-0">
-                <img src="img/1200px-Instituto_Federal_de_Brasília_-_Marca_Vertical_2015.svg.png" alt="Logo IFB" class="h-16 md:h-20 ml-4">
-                <img src="img/banner.jpg" alt="Logo PIBIC" class="h-16 md:h-20 ml-2">
-            </div>
+<body>
+  <header class="glass-nav sticky top-0 z-30">
+    <div class="shell px-4 py-3 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-3 min-w-0">
+        <span class="grid h-10 w-10 place-items-center rounded-lg bg-[#0f5e9c] text-white font-black">MD</span>
+        <span class="min-w-0">
+          <strong class="block text-sm md:text-base leading-tight">Monitoramento Digital</strong>
+          <span class="block text-xs text-slate-500 truncate">Indicadores da API</span>
+        </span>
+      </a>
+      <div class="institutional-logos" aria-label="Logos institucionais">
+        <img src="img/1200px-Instituto_Federal_de_Brasília_-_Marca_Vertical_2015.svg.png" alt="Instituto Federal de Brasília">
+        <img src="img/banner.jpg" alt="PIBIC">
+      </div>
+      <nav class="nav-scroll flex items-center gap-1">
+        <a class="nav-link" href="index.html">Início</a>
+        <a class="nav-link" href="pg2.html">Programas</a>
+        <div class="schools-menu">
+          <button class="nav-link" type="button">Escolas</button>
+          <div class="schools-dropdown">
+            <a class="school-link" href="cruzeiro1.html">CEMI Cruzeiro</a>
+            <a class="school-link" href="asanorte.html">CEM Asa Norte</a>
+            <a class="school-link" href="elefantebranco.html">CEM Elefante Branco</a>
+            <a class="school-link" href="freire.html">CEM Paulo Freire</a>
+            <a class="school-link" href="leste.html">CEM St Leste</a>
+            <a class="school-link" href="oeste.html">CEM St Oeste</a>
+          </div>
         </div>
-    </header>
-    
-    <nav class="bg-white shadow-md">
-        <div class="container mx-auto">
-            <ul class="flex justify-center items-center list-none p-0 m-0 text-sm md:text-base">
-                <li><a href="index.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Início</a></li>
-                <li><a href="pg2.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Projetos e Programas</a></li>
-                <li class="relative" id="escolas-dropdown-container">
-                    <button id="escolas-btn" class="text-gray-600 hover:text-blue-600 px-3 py-3 block w-full text-left flex items-center transition-colors">
-                        <span>Escolas</span>
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div id="escolas-menu" class="absolute bg-white shadow-xl mt-1 rounded-md hidden z-10 w-48">
-                        <a href="cruzeiro1.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEMI Cruzeiro</a>
-                        <a href="asanorte.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Asa Norte</a>
-                        <a href="elefantebranco.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Elefante Branco</a>
-                        <a href="freire.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Paulo Freire</a>
-                        <a href="leste.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM St Leste</a>
-                        <a href="oeste.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM St Oeste</a>
-                    </div>
-                </li>
-                <li><a href="Mapa.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Localização</a></li>
-                <li><a href="dados.html" class="text-gray-800 font-bold px-3 py-3 block border-b-2 border-blue-600">Dados</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <main class="container mx-auto p-4 md:p-8 flex-grow">
-        <h2 class="text-3xl font-bold text-center text-[#031f46] mb-6">Análise de Dados dos Programas</h2>
-        <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Esta seção apresenta uma análise visual dos dados coletados sobre os programas educacionais. Os gráficos são interativos e alimentados diretamente pelo banco de dados da aplicação.</p>
-        
-        <div id="charts-container" class="space-y-12">
-            <p id="loading-message" class="text-center text-gray-500">Carregando dados dos gráficos...</p>
-        </div>
-    </main>
+        <a class="nav-link" href="Mapa.html">Mapa</a>
+        <a class="nav-link active" href="dados.html">Dados</a>
+      </nav>
+    </div>
+  </header>
 
-    <footer class="bg-gray-800 text-white text-center p-4 mt-8">
-        <p>&copy; 2024 Desenvolvido por Maria Fernanda Santos & Thiago Araújo.</p>
-    </footer>
+  <main class="shell px-4 py-9">
+    <section class="grid lg:grid-cols-[1fr_320px] gap-6 items-end">
+      <div>
+        <p class="text-sm font-black uppercase tracking-normal text-[#0f5e9c]">Painel executivo</p>
+        <h1 class="mt-2 text-3xl md:text-5xl font-black leading-tight">Análise dos programas monitorados</h1>
+        <p class="mt-4 max-w-3xl text-slate-600 leading-7">Indicadores calculados a partir da API externa do projeto, sem dados simulados na camada visual.</p>
+      </div>
+      <div class="panel p-5">
+        <p class="text-sm font-black text-slate-500">Buscar na tabela</p>
+        <input id="search" type="search" placeholder="Escola, programa ou status" class="mt-3 w-full rounded-lg border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#0f5e9c]">
+      </div>
+    </section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const chartsContainer = document.getElementById('charts-container');
-            const loadingMessage = document.getElementById('loading-message');
+    <section class="mt-7 grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <article class="stat-card p-4"><p class="text-xs font-black uppercase text-slate-500">Registros</p><strong id="stat-total" class="mt-2 block text-3xl font-black">--</strong></article>
+      <article class="stat-card p-4"><p class="text-xs font-black uppercase text-slate-500">Ativos</p><strong id="stat-active" class="mt-2 block text-3xl font-black text-emerald-700">--</strong></article>
+      <article class="stat-card p-4"><p class="text-xs font-black uppercase text-slate-500">Suspensos</p><strong id="stat-suspended" class="mt-2 block text-3xl font-black text-amber-700">--</strong></article>
+      <article class="stat-card p-4"><p class="text-xs font-black uppercase text-slate-500">Não iniciados</p><strong id="stat-idle" class="mt-2 block text-3xl font-black text-slate-700">--</strong></article>
+    </section>
 
-            async function carregarDadosEGerarGraficos() {
-                try {
-                    const response = await fetch('/api/dados-completos');
-                    const dados = await response.json();
-                    loadingMessage.style.display = 'none';
+    <section class="mt-7 grid lg:grid-cols-2 gap-5">
+      <article class="panel p-5">
+        <h2 class="text-lg font-black">Programas por escola</h2>
+        <div id="chart-school" class="mt-3 h-[390px]"></div>
+      </article>
+      <article class="panel p-5">
+        <h2 class="text-lg font-black">Distribuição por status</h2>
+        <div id="chart-status" class="mt-3 h-[390px]"></div>
+      </article>
+    </section>
 
-                    gerarGraficoProgramasPorEscola(dados);
-                    gerarGraficoStatusGeral(dados);
-                    gerarTabelaDados(dados);
+    <section class="panel mt-7 overflow-hidden">
+      <div class="border-b border-slate-200 p-5">
+        <h2 class="text-lg font-black">Base consolidada</h2>
+        <p id="table-count" class="mt-1 text-sm font-bold text-slate-500">Carregando registros...</p>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm">
+          <thead class="bg-slate-50 text-xs font-black uppercase text-slate-500">
+            <tr>
+              <th class="px-5 py-4">Escola</th>
+              <th class="px-5 py-4">Programa</th>
+              <th class="px-5 py-4">Status</th>
+              <th class="px-5 py-4">Fontes</th>
+            </tr>
+          </thead>
+          <tbody id="table-body" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-                } catch (error) {
-                    console.error("Erro ao buscar dados para os gráficos:", error);
-                    loadingMessage.textContent = 'Falha ao carregar os dados. Verifique se o servidor está rodando.';
-                    loadingMessage.classList.add('text-red-500');
-                }
-            }
+  <footer class="bg-[#101827] text-white mt-10">
+    <div class="shell px-4 py-8 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+      <p class="text-sm text-white/72">&copy; 2026 Monitoramento Digital.</p>
+      <a class="text-sm font-bold text-white/80 hover:text-white" href="Mapa.html">Abrir mapa executivo</a>
+    </div>
+  </footer>
 
-            function gerarGraficoProgramasPorEscola(dados) {
-                const todasEscolas = [
-                    'CEMI Cruzeiro',
-                    'CEM Asa Norte',
-                    'CEM Elefante Branco',
-                    'CEM Paulo Freire',
-                    'CEM St Leste',
-                    'CEM St Oeste'
-                ];
+  <script>
+    const state = { dados: [], busca: '' };
+    const statusClass = {
+      'Ativo': 'bg-emerald-50 text-emerald-700',
+      'Suspenso': 'bg-amber-50 text-amber-700',
+      'Não Iniciado': 'bg-slate-100 text-slate-700'
+    };
 
-                const escolasMap = new Map();
-                todasEscolas.forEach(nome => {
-                    escolasMap.set(nome, { nome: nome, ativos: 0 });
-                });
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+      }[char]));
+    }
 
-                dados.forEach(item => {
-                    if (item.status === 'Ativo' && todasEscolas.includes(item.escola_nome)) {
-                        escolasMap.get(item.escola_nome).ativos++;
-                    }
-                });
+    function filtrados() {
+      const busca = state.busca.toLowerCase();
+      return state.dados.filter(item =>
+        !busca ||
+        String(item.escola_nome || '').toLowerCase().includes(busca) ||
+        String(item.programa_nome || '').toLowerCase().includes(busca) ||
+        String(item.status || '').toLowerCase().includes(busca)
+      );
+    }
 
-                const escolas = Array.from(escolasMap.values());
-                const data = [{
-                    x: escolas.map(e => e.nome),
-                    y: escolas.map(e => e.ativos),
-                    type: 'bar',
-                    marker: { color: '#031f46' }
-                }];
-                const layout = {
-                    title: 'Programas Ativos por Escola',
-                    xaxis: { title: 'Escola' },
-                    yaxis: { title: 'Nº de Programas Ativos', tickformat: 'd' },
-                    font: { family: 'Inter, sans-serif' }
-                };
-                
-                const chartDiv = document.createElement('div');
-                chartDiv.className = 'bg-white p-6 rounded-lg shadow-lg';
-                chartDiv.innerHTML = `
-                    <div id="chart1" class="w-full h-96"></div>
-                    <div class="mt-4 border-t pt-4">
-                        <h3 class="font-bold text-lg text-gray-800">Gráfico 1: Total de Programas Ativos por Escola</h3>
-                        <p class="text-gray-600 mt-1">Este gráfico de barras compara a quantidade de programas com status "Ativo" em cada escola.</p>
-                    </div>`;
-                chartsContainer.appendChild(chartDiv);
-                Plotly.newPlot('chart1', data, layout, {responsive: true});
-            }
+    function contarPorStatus(dados) {
+      return dados.reduce((acc, item) => {
+        acc[item.status] = (acc[item.status] || 0) + 1;
+        return acc;
+      }, {});
+    }
 
-            function gerarGraficoStatusGeral(dados) {
-                const statusCounts = dados.reduce((acc, item) => {
-                    acc[item.status] = (acc[item.status] || 0) + 1;
-                    return acc;
-                }, {});
+    function renderizarCards(dados) {
+      const status = contarPorStatus(dados);
+      document.getElementById('stat-total').textContent = dados.length;
+      document.getElementById('stat-active').textContent = status.Ativo || 0;
+      document.getElementById('stat-suspended').textContent = status.Suspenso || 0;
+      document.getElementById('stat-idle').textContent = status['Não Iniciado'] || 0;
+    }
 
-                const statusOrder = ['Ativo', 'Suspenso', 'Não Iniciado'];
-                const orderedLabels = statusOrder.filter(status => statusCounts[status]);
-                const orderedValues = orderedLabels.map(status => statusCounts[status]);
-                const colorMap = {
-                    'Ativo': '#22c55e', // green
-                    'Suspenso': '#ef4444', // red
-                    'Não Iniciado': '#f59e0b' // orange
-                };
-                const orderedColors = orderedLabels.map(status => colorMap[status]);
+    function renderizarGraficos(dados) {
+      const porEscola = dados.reduce((acc, item) => {
+        acc[item.escola_nome] = (acc[item.escola_nome] || 0) + 1;
+        return acc;
+      }, {});
+      const escolas = Object.keys(porEscola);
 
-                const data = [{
-                    labels: orderedLabels,
-                    values: orderedValues,
-                    type: 'pie',
-                    hole: .4,
-                    marker: { colors: orderedColors }
-                }];
-                const layout = {
-                    title: 'Distribuição Geral do Status dos Programas',
-                    font: { family: 'Inter, sans-serif' }
-                };
+      Plotly.newPlot('chart-school', [{
+        x: escolas.map(escola => porEscola[escola]),
+        y: escolas,
+        type: 'bar',
+        orientation: 'h',
+        marker: { color: '#0f5e9c' }
+      }], {
+        margin: { t: 20, r: 18, b: 44, l: 150 },
+        font: { family: 'Inter, sans-serif', color: '#334155' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        xaxis: { title: 'Registros', tickformat: 'd' }
+      }, { responsive: true, displayModeBar: false });
 
-                const chartDiv = document.createElement('div');
-                chartDiv.className = 'bg-white p-6 rounded-lg shadow-lg';
-                                chartDiv.innerHTML = `
-                    <div id="chart2" class="w-full h-96"></div>
-                    <div class="mt-4 border-t pt-4">
-                        <h3 class="font-bold text-lg text-gray-800">Gráfico 2: Distribuição Geral do Status dos Programas</h3>
-                        <p class="text-gray-600 mt-1">Este gráfico de pizza mostra a proporção geral dos status de todos os programas em todas as escolas combinadas.</p>
-                    </div>`;
-                chartsContainer.appendChild(chartDiv);
-                Plotly.newPlot('chart2', data, layout, {responsive: true});
-            }
+      const status = contarPorStatus(dados);
+      const labels = Object.keys(status);
+      Plotly.newPlot('chart-status', [{
+        labels,
+        values: labels.map(label => status[label]),
+        type: 'pie',
+        hole: .64,
+        marker: { colors: labels.map(label => label === 'Ativo' ? '#0f9f6e' : label === 'Suspenso' ? '#c47a09' : '#64748b') }
+      }], {
+        margin: { t: 20, r: 10, b: 20, l: 10 },
+        font: { family: 'Inter, sans-serif', color: '#334155' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        showlegend: true
+      }, { responsive: true, displayModeBar: false });
+    }
 
-            function gerarGraficoAlunosAtendidosSimulado() {
-                const dadosSimulados = {
-                    escolas: ['CEAN', 'CEMEB', 'P. Freire', 'CENSEL'],
-                    peDeMeia: [150, 130, 160, 145],
-                    emti: [0, 200, 0, 0],
-                    cid: [80, 0, 95, 0]
-                };
-                const trace1 = { x: dadosSimulados.escolas, y: dadosSimulados.peDeMeia, name: 'Pé-de-Meia', type: 'bar' };
-                const trace2 = { x: dadosSimulados.escolas, y: dadosSimulados.emti, name: 'EMTI', type: 'bar' };
-                const trace3 = { x: dadosSimulados.escolas, y: dadosSimulados.cid, name: 'CID', type: 'bar' };
-                const data = [trace1, trace2, trace3];
-                const layout = {
-                    title: 'Alunos Atendidos por Programa (Dados de Exemplo)',
-                    barmode: 'group',
-                    xaxis: { title: 'Escola' },
-                    yaxis: { title: 'Nº de Alunos' },
-                    font: { family: 'Inter, sans-serif' }
-                };
+    function renderizarTabela() {
+      const dados = filtrados();
+      document.getElementById('table-count').textContent = `${dados.length} registros exibidos`;
+      document.getElementById('table-body').innerHTML = dados.map(item => {
+        const fontes = (item.fontes || []).slice(0, 2).map(fonte =>
+          `<a class="block truncate font-bold text-[#0f5e9c] hover:underline" href="${escapeHtml(fonte.url)}" target="_blank" rel="noopener">${escapeHtml(fonte.titulo)}</a>`
+        ).join('');
 
-                const chartDiv = document.createElement('div');
-                chartDiv.className = 'bg-white p-6 rounded-lg shadow-lg';
-                chartDiv.innerHTML = `
-                    <div id="chart3" class="w-full h-96"></div>
-                    <div class="mt-4 border-t pt-4">
-                        <h3 class="font-bold text-lg text-gray-800">Gráfico 3: Alunos Atendidos por Programa (Exemplo)</h3>
-                        <p class="text-gray-600 mt-1"><strong>Nota:</strong> Este gráfico utiliza dados de exemplo, pois a informação sobre o número de alunos atendidos por programa ainda não está disponível no banco de dados.</p>
-                    </div>`;
-                chartsContainer.appendChild(chartDiv);
-                Plotly.newPlot('chart3', data, layout, {responsive: true});
-            }
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="px-5 py-4 font-bold text-slate-800">${escapeHtml(item.escola_nome || '-')}</td>
+            <td class="px-5 py-4 text-slate-600">${escapeHtml(item.programa_nome || '-')}</td>
+            <td class="px-5 py-4"><span class="status-pill ${statusClass[item.status] || statusClass['Não Iniciado']}">${escapeHtml(item.status || 'Não Iniciado')}</span></td>
+            <td class="px-5 py-4 max-w-[260px] text-xs">${fontes || '<span class="text-slate-400">Sem fonte vinculada</span>'}</td>
+          </tr>
+        `;
+      }).join('');
+    }
 
-            const dropdownContainer = document.getElementById('escolas-dropdown-container');
-            const dropdownBtn = document.getElementById('escolas-btn');
-            const dropdownMenu = document.getElementById('escolas-menu');
+    async function carregarDados() {
+      try {
+        const response = await fetch('/api/dados-completos');
+        if (!response.ok) throw new Error('Falha ao carregar API');
+        state.dados = await response.json();
+        renderizarCards(state.dados);
+        renderizarGraficos(state.dados);
+        renderizarTabela();
+      } catch (error) {
+        document.getElementById('table-body').innerHTML = '<tr><td class="px-5 py-4 text-red-700" colspan="4">Falha ao carregar dados externos.</td></tr>';
+      }
+    }
 
-            if (dropdownBtn) {
-                dropdownBtn.addEventListener('click', () => dropdownMenu.classList.toggle('hidden'));
-                document.addEventListener('click', (event) => {
-                    if (!dropdownContainer.contains(event.target)) {
-                        dropdownMenu.classList.add('hidden');
-                    }
-                });
-            }
+    document.getElementById('search').addEventListener('input', event => {
+      state.busca = event.target.value.trim();
+      renderizarTabela();
+    });
 
-            carregarDadosEGerarGraficos();
-        });
-    </script>
+    carregarDados();
+  </script>
 </body>
 </html>

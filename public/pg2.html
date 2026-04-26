@@ -3,171 +3,182 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Programas e Projetos - Monitoramento Digital</title>
-  
+  <title>Programas - Monitoramento Digital</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f4f7f6;
-    }
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease-in-out;
+    body { font-family: 'Inter', sans-serif; background: #f7f8fb; color: #111827; letter-spacing: 0; }
+    .shell { max-width: 1180px; margin: 0 auto; }
+    .glass-nav { background: rgba(255,255,255,.88); border-bottom: 1px solid #e5e7eb; backdrop-filter: blur(18px); }
+    .nav-link { color: #475569; border-radius: 999px; padding: .55rem .85rem; font-weight: 700; font-size: .88rem; white-space: nowrap; }
+    .nav-link:hover, .nav-link.active { color: #073b63; background: #e8f2fb; }
+    .schools-menu { position: relative; flex-shrink: 0; }
+    .schools-dropdown { display: none; position: absolute; right: 0; top: calc(100% + .45rem); width: 230px; padding: .45rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 24px 60px rgba(15,23,42,.16); z-index: 50; }
+    .schools-menu:hover .schools-dropdown, .schools-menu:focus-within .schools-dropdown { display: block; }
+    .school-link { display: block; border-radius: 6px; padding: .68rem .75rem; color: #334155; font-size: .85rem; font-weight: 800; }
+    .school-link:hover { background: #e8f2fb; color: #073b63; }
+    .institutional-logos { display: flex; align-items: center; gap: .65rem; padding: .35rem .55rem; border: 1px solid #e5e7eb; border-radius: 999px; background: rgba(255,255,255,.72); flex-shrink: 0; }
+    .institutional-logos img { height: 34px; width: auto; object-fit: contain; display: block; }
+    .panel, .program-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 18px 45px rgba(15,23,42,.07); }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+    .program-body h1, .program-body h2 { font-weight: 900; color: #111827; margin-top: 1rem; }
+    .program-body h1 { font-size: 1.15rem; }
+    .program-body h2 { font-size: 1rem; }
+    .program-body p, .program-body li { color: #475569; line-height: 1.7; }
+    .program-body ul { list-style: disc; padding-left: 1.25rem; margin-top: .5rem; }
+    .program-body a { color: #0f5e9c; font-weight: 700; text-decoration: underline; }
+    @media (max-width: 760px) {
+      .nav-scroll { overflow-x: auto; scrollbar-width: none; }
+      .nav-scroll::-webkit-scrollbar { display: none; }
+      .institutional-logos { display: none; }
     }
   </style>
 </head>
-<body class="text-gray-800 flex flex-col min-h-screen">
-
-  <!-- Cabeçalho -->
-  <header class="bg-[#031f46] text-white p-4 shadow-lg">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="text-left">
-        <h1 class="text-xl md:text-2xl font-bold">Monitoramento Digital</h1>
-        <h2 class="text-xs md:text-sm font-light text-gray-300">Programas e projetos nas escolas do GDF-Plano Piloto</h2>
+<body>
+  <header class="glass-nav sticky top-0 z-30">
+    <div class="shell px-4 py-3 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-3 min-w-0">
+        <span class="grid h-10 w-10 place-items-center rounded-lg bg-[#0f5e9c] text-white font-black">MD</span>
+        <span class="min-w-0">
+          <strong class="block text-sm md:text-base leading-tight">Monitoramento Digital</strong>
+          <span class="block text-xs text-slate-500 truncate">Catálogo de programas</span>
+        </span>
+      </a>
+      <div class="institutional-logos" aria-label="Logos institucionais">
+        <img src="img/1200px-Instituto_Federal_de_Brasília_-_Marca_Vertical_2015.svg.png" alt="Instituto Federal de Brasília">
+        <img src="img/banner.jpg" alt="PIBIC">
       </div>
-      <div class="flex items-center flex-shrink-0">
-        <img src="img/1200px-Instituto_Federal_de_Brasília_-_Marca_Vertical_2015.svg.png" alt="Logo IFB" class="h-16 md:h-20 ml-4">
-        <img src="img/banner.jpg" alt="Logo PIBIC" class="h-16 md:h-20 ml-2">
-      </div>
+      <nav class="nav-scroll flex items-center gap-1">
+        <a class="nav-link" href="index.html">Início</a>
+        <a class="nav-link active" href="pg2.html">Programas</a>
+        <div class="schools-menu">
+          <button class="nav-link" type="button">Escolas</button>
+          <div class="schools-dropdown">
+            <a class="school-link" href="cruzeiro1.html">CEMI Cruzeiro</a>
+            <a class="school-link" href="asanorte.html">CEM Asa Norte</a>
+            <a class="school-link" href="elefantebranco.html">CEM Elefante Branco</a>
+            <a class="school-link" href="freire.html">CEM Paulo Freire</a>
+            <a class="school-link" href="leste.html">CEM St Leste</a>
+            <a class="school-link" href="oeste.html">CEM St Oeste</a>
+          </div>
+        </div>
+        <a class="nav-link" href="Mapa.html">Mapa</a>
+        <a class="nav-link" href="dados.html">Dados</a>
+      </nav>
     </div>
   </header>
-  
-  <!-- Menu -->
-  <nav class="bg-white shadow-md">
-    <div class="container mx-auto">
-      <ul class="flex justify-center items-center list-none p-0 m-0 text-sm md:text-base">
-        <li><a href="index.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Início</a></li>
-        <li><a href="pg2.html" class="text-gray-800 font-bold px-3 py-3 block border-b-2 border-blue-600">Projetos e Programas</a></li>
-        <li class="relative" id="escolas-dropdown-container">
-          <button id="escolas-btn" class="text-gray-600 hover:text-blue-600 px-3 py-3 block w-full text-left flex items-center transition-colors" aria-expanded="false">
-            <span>Escolas</span>
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div id="escolas-menu" class="absolute bg-white shadow-xl mt-1 rounded-md hidden z-10 w-48">
-            <a href="cruzeiro1.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEMI Cruzeiro</a>
-            <a href="asanorte.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Asa Norte</a>
-            <a href="elefantebranco.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Elefante Branco</a>
-            <a href="freire.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM Paulo Freire</a>
-            <a href="leste.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM St Leste</a>
-            <a href="oeste.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">CEM St Oeste</a>
-          </div>
-        </li>
-        <li><a href="Mapa.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Localização</a></li>
-        <li><a href="dados.html" class="text-gray-600 hover:text-blue-600 px-3 py-3 block transition-colors">Dados</a></li>
-      </ul>
-    </div>
-  </nav>
 
-  <!-- Conteúdo -->
-  <main class="container mx-auto p-4 md:p-8 flex-grow">
-    <h2 class="text-3xl font-bold text-center text-[#031f46] mb-8">Programas e Projetos Educacionais</h2>
-    <div id="programas-container" class="space-y-4 max-w-4xl mx-auto">
-      <p class="text-center text-gray-500">Carregando programas...</p>
-    </div>
+  <main class="shell px-4 py-9">
+    <section class="grid lg:grid-cols-[1fr_360px] gap-6 items-start">
+      <div>
+        <p class="text-sm font-black uppercase tracking-normal text-[#0f5e9c]">Base externa consolidada</p>
+        <h1 class="mt-2 text-3xl md:text-5xl font-black leading-tight">Programas e projetos educacionais</h1>
+        <p class="mt-4 max-w-3xl text-slate-600 leading-7">Catálogo executivo dos programas cadastrados na API do projeto, com descrições, situação operacional e links de fonte quando disponíveis.</p>
+      </div>
+      <aside class="panel p-5">
+        <p class="text-sm font-black text-slate-500">Busca rápida</p>
+        <input id="search" type="search" placeholder="Filtrar programa" class="mt-3 w-full rounded-lg border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#0f5e9c]">
+        <p id="count" class="mt-4 text-sm font-bold text-slate-500">Carregando...</p>
+      </aside>
+    </section>
+
+    <section id="programas-container" class="mt-8 space-y-3">
+      <div class="panel p-6 text-slate-500">Carregando programas da API...</div>
+    </section>
   </main>
 
-  <!-- Rodapé -->
-  <footer class="bg-gray-800 text-white text-center p-4">
-    <p>&copy; 2024 Desenvolvido por Maria Fernanda Santos & Thiago Araújo.</p>
+  <footer class="bg-[#101827] text-white mt-10">
+    <div class="shell px-4 py-8 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+      <p class="text-sm text-white/72">&copy; 2026 Monitoramento Digital.</p>
+      <a class="text-sm font-bold text-white/80 hover:text-white" href="Mapa.html">Ver mapa executivo</a>
+    </div>
   </footer>
 
-  <!-- Script -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const programasContainer = document.getElementById('programas-container');
+  <script>
+    const state = { programas: [], busca: '' };
+    const container = document.getElementById('programas-container');
+    const count = document.getElementById('count');
 
-    function renderizarProgramas(programasUnicos) {
-      if (programasUnicos.length === 0) {
-        programasContainer.innerHTML = '<p class="text-center text-gray-500">Nenhum programa encontrado.</p>';
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+      }[char]));
+    }
+
+    function programasFiltrados() {
+      const busca = state.busca.toLowerCase();
+      return state.programas.filter(programa =>
+        !busca ||
+        String(programa.nome || '').toLowerCase().includes(busca) ||
+        String(programa.id || '').toLowerCase().includes(busca)
+      );
+    }
+
+    function renderizar() {
+      const programas = programasFiltrados();
+      count.textContent = `${programas.length} programas exibidos`;
+
+      if (!programas.length) {
+        container.innerHTML = '<div class="panel p-6 text-slate-500">Nenhum programa encontrado.</div>';
         return;
       }
 
-      programasContainer.innerHTML = programasUnicos.map(programa => `
-        <div class="accordion-item bg-white rounded-lg shadow-sm border border-gray-200">
-          <button class="accordion-header w-full flex justify-between items-center text-left p-4 font-semibold text-gray-800 hover:bg-gray-50 transition-colors" aria-expanded="false">
-            <span>${programa.id} - ${programa.nome}</span>
-            <svg class="w-5 h-5 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          <div class="accordion-content">
-            <div class="p-5 text-gray-700 leading-relaxed border-t">
-              ${programa.descricao || 'Descrição não disponível.'}
+      container.innerHTML = programas.map((programa, index) => {
+        const fontes = (programa.fontes || []).slice(0, 4).map(fonte =>
+          `<a class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-[#0f5e9c] hover:bg-blue-50" href="${escapeHtml(fonte.url)}" target="_blank" rel="noopener">${escapeHtml(fonte.titulo)}</a>`
+        ).join('');
+
+        return `
+          <article class="program-card overflow-hidden">
+            <button class="accordion-header w-full p-5 text-left" aria-expanded="false">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div>
+                  <p class="text-xs font-black uppercase text-slate-500">${escapeHtml(programa.id || `Programa ${index + 1}`)}</p>
+                  <h2 class="mt-1 text-lg md:text-xl font-black">${escapeHtml(programa.nome)}</h2>
+                </div>
+                <span class="rounded-full border border-slate-200 px-3 py-1 text-xs font-black text-slate-600">Ver detalhes</span>
+              </div>
+            </button>
+            <div class="accordion-content">
+              <div class="program-body border-t border-slate-200 p-5">
+                ${programa.descricao || '<p>Descrição não disponível.</p>'}
+                ${fontes ? `<div class="mt-5 flex flex-wrap gap-2">${fontes}</div>` : ''}
+              </div>
             </div>
-          </div>
-        </div>
-      `).join('');
+          </article>
+        `;
+      }).join('');
 
-      adicionarLogicaAccordion();
-    }
-
-    async function carregarTodosProgramas() {
-      try {
-        const response = await fetch('/api/programas');
-        const programasUnicos = await response.json();
-
-        renderizarProgramas(programasUnicos);
-
-      } catch (error) {
-        console.error("Erro ao carregar os programas:", error);
-        programasContainer.innerHTML = '<p class="text-center text-red-500">Falha ao carregar os dados.</p>';
-      }
-    }
-
-    function adicionarLogicaAccordion() {
-      programasContainer.querySelectorAll('.accordion-header').forEach(button => {
+      container.querySelectorAll('.accordion-header').forEach(button => {
         button.addEventListener('click', () => {
           const content = button.nextElementSibling;
-          const icon = button.querySelector('svg');
-
-          icon.classList.toggle('rotate-180');
           const expanded = button.getAttribute('aria-expanded') === 'true';
-          button.setAttribute('aria-expanded', !expanded);
-
-          programasContainer.querySelectorAll('.accordion-content').forEach(c => {
-            if (c !== content) c.style.maxHeight = null;
-          });
-
-          if (content.style.maxHeight) {
-            content.style.maxHeight = null;
-          } else {
-            content.style.maxHeight = content.scrollHeight + "px";
-          }
+          button.setAttribute('aria-expanded', String(!expanded));
+          content.style.maxHeight = expanded ? null : `${content.scrollHeight}px`;
         });
       });
     }
 
-    carregarTodosProgramas();
-
-    // Lógica do dropdown de escolas
-    const dropdownContainer = document.getElementById('escolas-dropdown-container');
-    const dropdownBtn = document.getElementById('escolas-btn');
-    const dropdownMenu = document.getElementById('escolas-menu');
-
-    if (dropdownBtn) {
-      dropdownBtn.addEventListener('click', () => dropdownMenu.classList.toggle('hidden'));
-      document.addEventListener('click', (event) => {
-        if (!dropdownContainer.contains(event.target)) {
-          dropdownMenu.classList.add('hidden');
-        }
-      });
+    async function carregarProgramas() {
+      try {
+        const response = await fetch('/api/programas');
+        if (!response.ok) throw new Error('Falha ao carregar API');
+        state.programas = await response.json();
+        renderizar();
+      } catch (error) {
+        container.innerHTML = '<div class="panel p-6 text-red-700">Falha ao carregar os programas externos.</div>';
+        count.textContent = 'API indisponível';
+      }
     }
 
-    // Lógica do menu mobile
-    const menuBtn = document.getElementById('menu-btn');
-    const navMenu = document.getElementById('nav-menu');
+    document.getElementById('search').addEventListener('input', event => {
+      state.busca = event.target.value.trim();
+      renderizar();
+    });
 
-    if (menuBtn && navMenu) {
-      menuBtn.addEventListener('click', () => {
-        navMenu.classList.toggle('hidden');
-      });
-    }
-  });
-</script>
-
+    carregarProgramas();
+  </script>
 </body>
 </html>
